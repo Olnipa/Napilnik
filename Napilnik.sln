@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Napilnik", "Napilnik\Napilnik.csproj", "{2223EA72-7879-4DB7-BCD1-FA3D1F59AA64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Napilnik AppleStore", "Napilnik WebShop\Napilnik AppleStore.csproj", "{8980779B-412B-43A1-A34D-0883CFBBAA01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2223EA72-7879-4DB7-BCD1-FA3D1F59AA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2223EA72-7879-4DB7-BCD1-FA3D1F59AA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2223EA72-7879-4DB7-BCD1-FA3D1F59AA64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8980779B-412B-43A1-A34D-0883CFBBAA01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8980779B-412B-43A1-A34D-0883CFBBAA01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8980779B-412B-43A1-A34D-0883CFBBAA01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8980779B-412B-43A1-A34D-0883CFBBAA01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
