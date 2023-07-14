@@ -26,7 +26,9 @@ namespace Napilnik_AppleStore
             {
                 stringBuilder.Append(Symbols[random.Next(0, Symbols.Length)]);
             }
+
             stringBuilder.Append("\n");
+
             return stringBuilder.ToString();
         }
     }
