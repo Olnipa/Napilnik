@@ -1,45 +1,53 @@
-﻿namespace Napilnik_AppleStore
+﻿using System;
+
+namespace Napilnik_AppleStore
 {
     internal class Warehouse
     {
-        private readonly List<StackOfGoods> _warehouseGoods = new List<StackOfGoods>();
-
-        public IReadOnlyList<IReadOnlyStackOfGoods> WarehouseStacks => _warehouseGoods;
+        private readonly Dictionary<Good, int> _goods = new Dictionary<Good, int>();
 
         public void Delive(Good good, int quantity)
         {
-            StackOfGoods newStack = new StackOfGoods(good, quantity);
-            int intOfExistedStack = _warehouseGoods.FindIndex(stack => stack.Good == good);
+            if (quantity < 0)
+                throw new Exception("Количество должно быть больше или равно 0");
 
-            if (intOfExistedStack == -1)
-                _warehouseGoods.Add(newStack);
+            if (_goods.ContainsKey(good))
+                _goods[good] += quantity;
             else
-                _warehouseGoods[intOfExistedStack].Merge(newStack);
-        }
-
-        public void TakeGood(StackOfGoods stackOfGoods)
-        {
-            int intOfExistedStack = _warehouseGoods.FindIndex(stack => stack.Good == stackOfGoods.Good);
-
-            if (intOfExistedStack == -1)
-                throw new Exception($"Невозможно удалить {stackOfGoods.Good}, так как на складе нет этого товара.");
-
-            _warehouseGoods[intOfExistedStack].Remove(stackOfGoods);
+                _goods.Add(good, quantity);
         }
 
         public void TakeGood(Good good, int quantity)
         {
-            StackOfGoods newStack = new StackOfGoods(good, quantity);
-            TakeGood(newStack);
+            if (_goods.ContainsKey(good) == false || _goods[good] < quantity)
+                throw new Exception($"Невозможно получить {good.Name}, так как на складе нет или недостаточно этого товара.");
+
+            _goods[good] -= quantity;
+        }
+
+        public bool TryGetQuantityOfGood(Good good, out int quantity)
+        {
+            if (_goods.ContainsKey(good))
+            {
+                quantity = _goods[good];
+                return true;
+            }
+            else
+            {
+                quantity = 0;
+                return false;
+            }
         }
 
         public void WriteGoodsOnStock()
         {
+            int index = 1;
             Console.WriteLine("Товаров на складе:");
 
-            for (int i = 0; i < _warehouseGoods.Count; i++)
+            foreach (KeyValuePair<Good, int> good in _goods)
             {
-                _warehouseGoods[i].WriteGoodOnStock(i + 1);
+                Console.WriteLine($"{index}. {good.Key.Name} - {good.Value}");
+                index++;
             }
         }
     }

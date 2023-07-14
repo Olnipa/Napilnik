@@ -4,9 +4,7 @@
     {
         private Warehouse _warehouse;
 
-        private readonly List<StackOfGoods> _cartStacks = new List<StackOfGoods>();
-
-        public IReadOnlyList<IReadOnlyStackOfGoods> CartStacks => _cartStacks;
+        private readonly Dictionary<Good, int> _goodsInCart = new Dictionary<Good, int>();
 
         public Cart(Warehouse warehouse)
         {
@@ -17,44 +15,40 @@
         {
             try
             {
-                StackOfGoods newStack = new StackOfGoods(good, quantity);
+                if (_warehouse.TryGetQuantityOfGood(good, out int quantityInWarehouse) == false)
+                    throw new Exception($"Ошибка. Товар {good.Name} на складе отсутствует.");
 
-                IReadOnlyStackOfGoods? existedStackInWarehouse = _warehouse.WarehouseStacks.FirstOrDefault(stack => stack.Good == good);
+                if (quantityInWarehouse < quantity)
+                    throw new Exception($"Ошибка. Вы запросили {quantity} шт. {good.Name}, но на складе только {quantityInWarehouse} шт.");
 
-                if (existedStackInWarehouse == null)
-                    throw new Exception($"Ошибка. На складе отсутствует {good.Name}.");
+                _warehouse.TakeGood(good, quantity);
 
-                if (existedStackInWarehouse.Quantity < quantity)
-                    throw new Exception($"Ошибка. Вы запросили {quantity} шт. {good.Name}, но на складе только {existedStackInWarehouse.Quantity} шт.");
-
-                _warehouse.TakeGood(newStack);
-
-                StackOfGoods? stackInCart = _cartStacks.FirstOrDefault(stack => stack.Good == good);
-
-                if (stackInCart == null)
-                    _cartStacks.Add(newStack);
+                if (_goodsInCart.ContainsKey(good))
+                    _goodsInCart[good] += quantity;
                 else
-                    stackInCart.Merge(newStack);
+                    _goodsInCart.Add(good, quantity);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(exception.Message);
             }
         }
 
         public void WriteGoodsInCart()
         {
+            int index = 1;
             Console.WriteLine("Товаров в корзине:");
 
-            for (int i = 0; i < _cartStacks.Count; i++)
+            foreach (KeyValuePair<Good, int> good in _goodsInCart)
             {
-                _cartStacks[i].WriteGoodOnStock(i + 1);
+                Console.WriteLine($"{index}. {good.Key.Name} - {good.Value}");
+                index++;
             }
         }
 
         public Order Order()
         {
-            return new Order(CartStacks);
+            return new Order();
         }
     }
 }

@@ -10,13 +10,7 @@ namespace Napilnik_AppleStore
         private const string Symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/.1234567890";
         private const string linkMessage = "Ссылка для оплаты: ";
 
-        public IReadOnlyList<IReadOnlyStackOfGoods> OrderOfGoods { get; }
         public string Paylink { get => GetRandomString(); }
-
-        public Order(IReadOnlyList<IReadOnlyStackOfGoods> stacksOfGoods)
-        {
-            OrderOfGoods = stacksOfGoods;
-        }
 
         private string GetRandomString()
         {
