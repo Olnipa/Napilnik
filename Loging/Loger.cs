@@ -53,7 +53,7 @@
 
         public void WriteError(string message)
         {
-            if (DateTime.Now.DayOfWeek == DayOfWeek.Sunday)
+            if (DateTime.Now.DayOfWeek == DayOfWeek.Friday)
             {
                 _logger.WriteError(message);
             }
