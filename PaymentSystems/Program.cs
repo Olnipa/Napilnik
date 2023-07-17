@@ -5,26 +5,27 @@ class Program
 {
     static void Main(string[] args)
     {
-        string ID;
-        string Amount;
-
         int minAmount = 1;
         int maxAmount = 100000;
         int minID = 100000;
         int maxID = 999999;
+        string secretKey = "OchenSecretKey";
 
-        AbstractPaymentSystem paySystem1 = new PaymentSystem1();
-        AbstractPaymentSystem paySystem2 = new PaymentSystem2();
-        AbstractPaymentSystem paySystem3 = new PaymentSystem3();
+        IPaymentSystem paySystem1 = new PaymentSystem1();
+        IPaymentSystem paySystem2 = new PaymentSystem2();
+        IPaymentSystem paySystem3 = new PaymentSystem3(secretKey);
 
         Order randomOrder = new Order(GetRandomNumber(minID, maxID), GetRandomNumber(minAmount, maxAmount), Currency.RUB);
-        string payLink1 = paySystem1.GetPayingLink(randomOrder);
-        
 
-        //Выведите платёжные ссылки для трёх разных систем платежа: 
-        //pay.system1.ru/order?amount=12000RUB&hash={MD5 хеш ID заказа}
-        //order.system2.ru/pay?hash={MD5 хеш ID заказа + сумма заказа}
-        //system3.com/pay?amount=12000&curency=RUB&hash={SHA-1 хеш сумма заказа + ID заказа + секретный ключ от системы}
+        string payLink1 = paySystem1.GetPayingLink(randomOrder);
+        string payLink2 = paySystem2.GetPayingLink(randomOrder);
+        string payLink3 = paySystem3.GetPayingLink(randomOrder);
+
+        Console.WriteLine(payLink1);
+        Console.WriteLine(payLink2);
+        Console.WriteLine(payLink3);
+
+        Console.ReadLine();
     }
 
     static private int GetRandomNumber(int min, int max)
@@ -55,71 +56,60 @@ public interface IPaymentSystem
     public string GetPayingLink(Order order);
 }
 
-abstract class AbstractPaymentSystem : IPaymentSystem
+class PaymentSystem1 : IPaymentSystem
 {
-    public string DomainAddress { get; protected set; }
+    public string GetPayingLink(Order order)
+    {
+        string hash = Cryptography.ComputeMD5(Convert.ToString(order.Id));
 
-    public abstract string GetPayingLink(Order order);
+        return $"pay.system1.ru/order?amount={order.Amount}{order.Currency}&hash={hash}";
+    }
 }
 
-class PaymentSystem1 : AbstractPaymentSystem
+class PaymentSystem2 : IPaymentSystem
 {
-    public PaymentSystem1(string domain = "pay.system1.ru/order?")
+    public string GetPayingLink(Order order)
     {
-        DomainAddress = domain;
+        string hash = Cryptography.ComputeMD5(Convert.ToString(order.Id + order.Amount));
+
+        return $"order.system2.ru/pay?hash={hash}";
+    }
+}
+
+class PaymentSystem3 : IPaymentSystem
+{
+    private string _secretKey;
+
+    public PaymentSystem3(string secretKey)
+    {
+        _secretKey = secretKey;
     }
 
-    //pay.system1.ru/order?amount=12000RUB&hash={MD5 хеш ID заказа}
-
-    public override string GetPayingLink(Order order)
+    public string GetPayingLink(Order order)
     {
-        StringBuilder stringBuilder = new StringBuilder(DomainAddress);
-        string amount = $"amount=" + order.Amount;
-        string currency = Convert.ToString(order.Currency);
-        string hash = ComputeMD5(Convert.ToString(order.Id));
+        string hash = Cryptography.ComputeSHA1(Convert.ToString(order.Amount + order.Id + _secretKey.ToString()));
 
-        stringBuilder.Append(amount);
-        stringBuilder.Append(amount);
-        stringBuilder.Append(amount);
-
-        return 
+        return $"system3.com/pay?amount={order.Amount}&curency={order.Currency}&hash={hash}";
     }
+}
 
-    private string ComputeMD5(string s)
+static class Cryptography
+{
+    public static string ComputeMD5(string text)
     {
         using (MD5 md5 = MD5.Create())
         {
-            return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(s))).Replace("-", "");
+            byte[] hashBytes = md5.ComputeHash(Encoding.UTF8.GetBytes(text));
+            return BitConverter.ToString(hashBytes).Replace("-", "");
         }
     }
-}
 
-class PaymentSystem2 : AbstractPaymentSystem
-{
-    public PaymentSystem2(string domain = "order.system2.ru/pay?")
+    public static string ComputeSHA1(string text)
     {
-        DomainAddress = domain;
-    }
-
-    //order.system2.ru/pay?hash={MD5 хеш ID заказа + сумма заказа}
-    
-    public override string GetPayingLink(Order order)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-class PaymentSystem3 : AbstractPaymentSystem
-{
-    public PaymentSystem3(string domain = "system3.com/pay?")
-    {
-        DomainAddress = domain;
-    }
-
-    //system3.com/pay?amount=12000&curency=RUB&hash={SHA-1 хеш сумма заказа + ID заказа + секретный ключ от системы}
-
-    public override string GetPayingLink(Order order)
-    {
-        throw new NotImplementedException();
+        using (SHA1 sha1 = SHA1.Create())
+        {
+            byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(text));
+            return BitConverter.ToString(hashBytes).Replace("-", "");
+        }
     }
 }
