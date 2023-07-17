@@ -12,11 +12,11 @@ namespace Napilnik
 
         static void Main(string[] args)
         {
-            Pathfinder pathfinder1 = new Pathfinder(new FileLogWriter(new BaseLogWriter()));
-            Pathfinder pathfinder2 = new Pathfinder(new ConsoleLogWriter(new BaseLogWriter()));
-            Pathfinder pathfinder3 = new Pathfinder(new SecureLogWriter(new FileLogWriter(new BaseLogWriter())));
-            Pathfinder pathfinder4 = new Pathfinder(new SecureLogWriter(new ConsoleLogWriter(new BaseLogWriter())));
-            Pathfinder pathfinder5 = new Pathfinder(new ConsoleLogWriter(new SecureLogWriter(new FileLogWriter(new BaseLogWriter()))));
+            Pathfinder pathfinder1 = new Pathfinder(new FileLogWriter());
+            Pathfinder pathfinder2 = new Pathfinder(new ConsoleLogWriter());
+            Pathfinder pathfinder3 = new Pathfinder(new SecureLogWriter(new FileLogWriter()));
+            Pathfinder pathfinder4 = new Pathfinder(new SecureLogWriter(new ConsoleLogWriter()));
+            Pathfinder pathfinder5 = new Pathfinder(new AdditionalLogWriterToConsoleLogWriter(new SecureLogWriter(new FileLogWriter())));
 
             pathfinder1.Find(FileLog1);
             pathfinder2.Find(FileLog2);
