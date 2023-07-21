@@ -1,6 +1,6 @@
-﻿namespace RenameMethod
+﻿namespace CleanCode
 {
-    public class CleanCode
+    public class RenameMethod
     {
         public static int GetValidNumber(int a, int b, int c)
         {
