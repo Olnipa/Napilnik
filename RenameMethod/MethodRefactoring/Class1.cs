@@ -39,7 +39,7 @@ namespace CleanCode.MethodRefactoring
                 DataTable dataTable = GetDateTable(connectionString, commandText);
                 _textResult.Text = GetAccessibilityToVote(dataTable);
             }
-            catch (SQLiteException ex)
+            catch (SqliteException ex)
             {
                 if (ex.ErrorCode != _sqlNotFoundErrorCode)
                     return;
