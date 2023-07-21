@@ -10,7 +10,7 @@ namespace Napilnik
         private const string FileLog4 = "LogMessage4";
         private const string FileLog5 = "LogMessage5";
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Pathfinder pathfinder1 = new Pathfinder(new FileLogWriter());
             Pathfinder pathfinder2 = new Pathfinder(new ConsoleLogWriter());
@@ -23,21 +23,6 @@ namespace Napilnik
             pathfinder3.Find(FileLog3);
             pathfinder4.Find(FileLog4);
             pathfinder5.Find(FileLog5);
-        }
-    }
-
-    class Pathfinder
-    {
-        private ILogger Logger;
-
-        public Pathfinder(ILogger logger)
-        {
-            Logger = logger;
-        }
-
-        public void Find(string message)
-        {
-            Logger.WriteError(message);
         }
     }
 }

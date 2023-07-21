@@ -4,24 +4,24 @@ namespace Napilnik_AppleStore
 {
     internal class Order
     {
-        private Random random = new Random();
-
-        private const int defaultLinkLenght = 15;
+        private const int DefaultLinkLenght = 15;
         private const string Symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ/.1234567890";
-        private const string linkMessage = "Ссылка для оплаты: ";
+        private const string LinkMessage = "Ссылка для оплаты: ";
+
+        private readonly Random random = new Random();
 
         public string Paylink { get => GetRandomString(); }
 
         private string GetRandomString()
         {
-            StringBuilder stringBuilder = new StringBuilder(linkMessage);
+            StringBuilder stringBuilder = new StringBuilder(LinkMessage);
 
-            for (int i = 0; i < defaultLinkLenght; i++)
+            for (int i = 0; i < DefaultLinkLenght; i++)
             {
                 stringBuilder.Append(Symbols[random.Next(0, Symbols.Length)]);
             }
 
-            stringBuilder.Append("\n");
+            stringBuilder.Append('\n');
 
             return stringBuilder.ToString();
         }

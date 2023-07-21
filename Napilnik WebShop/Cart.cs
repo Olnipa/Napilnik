@@ -2,9 +2,9 @@
 {
     internal class Cart
     {
-        private Warehouse _warehouse;
+        private readonly Dictionary<Good, int> _goodsInCart = new ();
 
-        private readonly Dictionary<Good, int> _goodsInCart = new Dictionary<Good, int>();
+        private readonly Warehouse _warehouse;
 
         public Cart(Warehouse warehouse)
         {
