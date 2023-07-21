@@ -11,4 +11,5 @@
 
         public void Shoot() => _bullets -= _bulletsPerShoot;
     }
+
 }
