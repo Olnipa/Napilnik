@@ -1,6 +1,5 @@
 ﻿namespace Loging
 {
-
     internal class FileLogWriter : ILogger
     {
         public void WriteError(string message)

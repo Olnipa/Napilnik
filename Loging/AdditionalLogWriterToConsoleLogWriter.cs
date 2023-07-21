@@ -1,9 +1,8 @@
 ﻿namespace Loging
 {
-
     internal class AdditionalLogWriterToConsoleLogWriter : ConsoleLogWriter
     {
-        private ILogger _additionalLogWriter;
+        private readonly ILogger _additionalLogWriter;
 
         public AdditionalLogWriterToConsoleLogWriter(ILogger additionalLogWriterToConsoleLogWriter)
         {

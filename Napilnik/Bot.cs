@@ -1,18 +1,17 @@
 ﻿namespace Napilnik
 {
-
     internal class Bot
     {
-        private Weapon Weapon;
+        private readonly Weapon _weapon;
 
         public Bot(Weapon weapon)
         {
-            Weapon = weapon;
+            _weapon = weapon;
         }
 
         public void OnSeePlayer(Player player)
         {
-            Weapon.Fire(player);
+            _weapon.Fire(player);
         }
     }
 }

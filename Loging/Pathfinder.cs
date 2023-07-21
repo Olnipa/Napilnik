@@ -2,19 +2,18 @@
 
 namespace Napilnik
 {
-
     internal class Pathfinder
     {
-        private ILogger Logger;
+        private readonly ILogger _logger;
 
         public Pathfinder(ILogger logger)
         {
-            Logger = logger;
+            _logger = logger;
         }
 
         public void Find(string message)
         {
-            Logger.WriteError(message);
+            _logger.WriteError(message);
         }
     }
 }

@@ -3,8 +3,6 @@
 
     internal class Player
     {
-        public int Health { get; private set; }
-
         public Player(int health)
         {
             if (health < 0)
@@ -12,6 +10,8 @@
 
             Health = health;
         }
+
+        public int Health { get; private set; }
 
         public void TryTakeDamage(int damage)
         {
