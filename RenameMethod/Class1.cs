@@ -1,13 +1,13 @@
-﻿namespace CleanCode
-{
-    class Player { }
+﻿//namespace CleanCode
+//{
+//    class Player { }
 
-    class Gun { }
+//    class Gun { }
 
-    class TargetFollower { }
+//    class TargetFollower { }
 
-    class UnitsGetter
-    {
-        public IReadOnlyCollection<Unit> UnitsToGet { get; private set; }
-    }
-}
+//    class UnitsGetter
+//    {
+//        public IReadOnlyCollection<Unit> UnitsToGet { get; private set; }
+//    }
+//}
